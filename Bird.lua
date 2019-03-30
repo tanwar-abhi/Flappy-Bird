@@ -3,7 +3,7 @@
 -- Creating a class with name "Bird"
 Bird = Class{}
 
-local GRAVITY = 5
+local GRAVITY = 10
 
 -- Initialization of Bird Class
 function Bird:init()
@@ -24,9 +24,15 @@ function Bird:render()
     love.graphics.draw(self.image,self.x,self.y)
 end
 
+
 function Bird:update(dt)
     -- Setting speed of fall
     self.dy = self.dy +  GRAVITY*dt
 
     self.y = self.y + self.dy
+
+    if love.keyboard.wasPressed('space') then
+        --self.dy = self.dy - GRAVITY*dt
+        self.dy = -3
+    end
 end

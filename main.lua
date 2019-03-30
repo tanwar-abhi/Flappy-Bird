@@ -38,6 +38,8 @@ function love.load()
         fullscreen=false, resizable=true,vsync=true
     })
 
+    -- creating an empty table "love.keyboard", since in love everything is table except basic variables.
+    love.keyboard.keysPressed = {}
 end
 
 -- Dynamic rescaling and sizig of the window
@@ -46,10 +48,25 @@ function love.resize(w,h)
 end
 
 function love.keypressed(key)
+    -- Populates the table with info on which key is pressed.
+    love.keyboard.keysPressed[key] = true
+
     if key == 'escape' then
         love.event.quit()
     end
+
 end
+
+
+function love.keyboard.wasPressed(key)
+    if love.keyboard.keysPressed[key] then
+        return true
+    else
+        return false
+    end
+end
+
+
 
 function love.update(dt)
     backgroundScroll = (backgroundScroll + SPEED_BACKGROUND * dt) % BACKGROUND_LOOPING_POINT
@@ -57,6 +74,9 @@ function love.update(dt)
     groundScroll = (groundScroll + SPEED_GROUND * dt ) % virtual_width
 
     bird:update(dt)
+
+    -- resets the table at every frame rate
+    love.keyboard.keysPressed = {}
 
 end
 
