@@ -13,8 +13,8 @@ virtual_width = 512
 virtual_height = 300
 
 -- create local variables {i.e. it won't be accessable outside this file}
-local background = love.graphics.newImage('background.png')
-local ground = love.graphics.newImage('ground.png')
+local background = love.graphics.newImage('images/background.png')
+local ground = love.graphics.newImage('images/ground.png')
 
 -- Keeping track of images {x-axis position} for paralax scrolling
 local backgroundScroll = 0

@@ -3,11 +3,15 @@
 -- Creating a class with name "Bird"
 Bird = Class{}
 
-local GRAVITY = 10
+local GRAVITY = 15
+
+-- Jump height
+local ANTI_GRAVITY = -3
+
 
 -- Initialization of Bird Class
 function Bird:init()
-    self.image = love.graphics.newImage('bird.png')
+    self.image = love.graphics.newImage('images/bird.png')
 
     -- Gets the width and height from the image file used above
     self.height = self.image:getHeight()
@@ -32,7 +36,7 @@ function Bird:update(dt)
     self.y = self.y + self.dy
 
     if love.keyboard.wasPressed('space') then
-        --self.dy = self.dy - GRAVITY*dt
-        self.dy = -3
+        -- self.dy = self.dy - GRAVITY*dt
+        self.dy = ANTI_GRAVITY
     end
 end
