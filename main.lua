@@ -5,6 +5,7 @@ push = require 'push'
 Class = require 'class'
 
 require 'Bird'
+require 'pipe'
 
 window_width = 1280
 window_height = 720
@@ -28,6 +29,12 @@ local BACKGROUND_LOOPING_POINT = 413
 
 local bird = Bird()
 
+-- Keep track of all the pipes that are being spawned
+local pipes = {}
+
+-- time to track spawning of each pipe {i.e. after pipe/timer}
+local spawnTimer = 0
+
 function love.load()
     -- Apply nearest neighbour filtering to avoid blurrieness of pictures
     love.graphics.setDefaultFilter('nearest','nearest')
@@ -37,6 +44,8 @@ function love.load()
     push:setupScreen(virtual_width,virtual_height,window_width,window_height,{
         fullscreen=false, resizable=true,vsync=true
     })
+
+    math.randomseed(os.time())
 
     -- creating an empty table "love.keyboard", since in love everything is table except basic variables.
     love.keyboard.keysPressed = {}
@@ -57,7 +66,7 @@ function love.keypressed(key)
 
 end
 
-
+-- a custom function to check if key is pressed once
 function love.keyboard.wasPressed(key)
     if love.keyboard.keysPressed[key] then
         return true
@@ -73,9 +82,24 @@ function love.update(dt)
 
     groundScroll = (groundScroll + SPEED_GROUND * dt ) % virtual_width
 
+    spawnTimer = spawnTimer + dt
+    if spawnTimer > 2 then
+        table.insert(pipes,Pipe())
+        spawnTimer = 0
+    end
+
     bird:update(dt)
 
-    -- resets the table at every frame rate
+    for k, pipe in pairs(pipes) do
+        pipe:update(dt)
+
+        if pipe.x < -pipe.width then
+            table.remove(pipes,k)
+        end
+
+    end
+
+    -- resets the table at every frame.
     love.keyboard.keysPressed = {}
 
 end
@@ -87,8 +111,13 @@ function love.draw()
     push:start()
     love.graphics.draw(background,-backgroundScroll,0)
     love.graphics.draw(ground,-groundScroll,virtual_height-16)
+    
+    for k, pipe in pairs(pipes) do
+        pipe:render()
+    end 
 
     bird:render()
 
     push:finish()
 end
+
