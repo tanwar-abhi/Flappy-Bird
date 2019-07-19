@@ -3,10 +3,10 @@
 -- Creating a class with name "Bird"
 Bird = Class{}
 
-local GRAVITY = 15
+local GRAVITY = 20
 
 -- Jump height
-local ANTI_GRAVITY = -3
+local ANTI_GRAVITY = -5
 
 
 -- Initialization of Bird Class

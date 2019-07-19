@@ -7,11 +7,11 @@ Class = require 'class'
 require 'Bird'
 require 'pipe'
 
-window_width = 1280
-window_height = 720
+WINDOW_WIDTH = 1280
+WINDOW_HEIGHT = 720
 
 virtual_width = 512
-virtual_height = 300
+virtual_height = 290
 
 -- create local variables {i.e. it won't be accessable outside this file}
 local background = love.graphics.newImage('images/background.png')
@@ -41,17 +41,18 @@ function love.load()
 
     love.window.setTitle('Flappy Bird')
 
-    push:setupScreen(virtual_width,virtual_height,window_width,window_height,{
+    push:setupScreen(virtual_width,virtual_height,WINDOW_WIDTH,WINDOW_HEIGHT,{
         fullscreen=false, resizable=true,vsync=true
     })
 
     math.randomseed(os.time())
 
-    -- creating an empty table "love.keyboard", since in love everything is table except basic variables.
+    -- creating an empty table "love.keyboard.keysPressed", since in love everything is table except basic variables.
+    -- This table is to track the keys pressed.
     love.keyboard.keysPressed = {}
 end
 
--- Dynamic rescaling and sizig of the window
+-- Dynamic rescaling and sizing of the window
 function love.resize(w,h)
     push:resize(w,h)
 end
@@ -66,7 +67,7 @@ function love.keypressed(key)
 
 end
 
--- a custom function to check if key is pressed once
+-- a custom function to check weither a key was pressed in the last frame or not.
 function love.keyboard.wasPressed(key)
     if love.keyboard.keysPressed[key] then
         return true
@@ -90,10 +91,10 @@ function love.update(dt)
 
     bird:update(dt)
 
-    for k, pipe in pairs(pipes) do
-        pipe:update(dt)
+    for k, piPe in pairs(pipes) do
+        piPe:update(dt)
 
-        if pipe.x < -pipe.width then
+        if piPe.x < -piPe.width then
             table.remove(pipes,k)
         end
 
@@ -112,8 +113,8 @@ function love.draw()
     love.graphics.draw(background,-backgroundScroll,0)
     love.graphics.draw(ground,-groundScroll,virtual_height-16)
     
-    for k, pipe in pairs(pipes) do
-        pipe:render()
+    for k, piPe in pairs(pipes) do
+        piPe:render()
     end 
 
     bird:render()
