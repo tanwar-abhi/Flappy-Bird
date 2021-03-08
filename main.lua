@@ -6,6 +6,7 @@ Class = require 'class'
 
 require 'Bird'
 require 'pipe'
+require 'PipePair'
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -30,10 +31,13 @@ local BACKGROUND_LOOPING_POINT = 413
 local bird = Bird()
 
 -- Keep track of all the pipes that are being spawned
-local pipes = {}
+local pipesPairs = {}
 
 -- time to track spawning of each pipe {i.e. after pipe/timer}
 local spawnTimer = 0
+
+-- to track the last set of pipe's gap in between.
+local lastY = -PIPE_HEIGHT + math.random(80) + 20
 
 function love.load()
     -- Apply nearest neighbour filtering to avoid blurrieness of pictures
